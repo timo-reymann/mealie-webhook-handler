@@ -5,7 +5,7 @@ RUN if [[ "$(arch)" == "x86_64" ]]; then \
     else \
         architecture="arm"; \
     fi; \
-    cp /dist/mealie-webhook-handler_${architecture} /bin/mealie-webhook-handler && \
+    cp /dist/mealie-webhook-handler_linux-${architecture} /bin/mealie-webhook-handler && \
     chmod +x /bin/mealie-webhook-handler && \
     chown 1000:1000 /bin/mealie-webhook-handler
 
