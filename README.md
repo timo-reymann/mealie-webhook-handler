@@ -12,24 +12,105 @@ mealie-webhook-handler
 </p>
 
 ## Features
+
 <!-- List features as bullet points -->
+
 - Customizable templates
 - Generic output support
 
-## Installation
-<!-- Add installation instructions -->
+## Want to contribute a new output?
 
-> TBD
+1. Fork this repository
+2. Add a new output in `outputs/<your name>/main.go` (see `github_pr` for reference)
+3. Create a PR
+
+## Installation
+
+It's recommended to install it next to your mealie instance using docker-compose.
+
+1. Create `webhook-templates/chowdown-template.gotpl`
+   ```gotemplate
+   ---
+   layout: recipe
+   title: {{ .Recipe.Name }}
+   {{- if .HasImage -}}
+   image: images/{{ .Recipe.Slug }}.webp
+   {{- end -}}
+   tags: {{- range $index, $tag := .Recipe.Tags }} {{- if $index }},{{ end }} {{ $tag.Name }} {{- end }}
+   
+   ingredients:
+   {{- range $val := .Recipe.RecipeIngredient }}
+     - {{ if $val.Quantity }} {{ $val.Quantity }}{{- end -}}{{- if $val.Unit }} {{ or $val.Unit.Abbreviation $val.Unit.Name }}{{- end }} {{ if or $val.Quantity $val.Unit }} {{- end }}{{ $val.Food.Name }}{{- if $val.Note }} {{ $val.Note }}{{- end }}
+   {{- end }}
+
+   directions:
+   {{- range $val := .Recipe.RecipeInstructions }}
+     - {{ $val.Text }}
+   {{- end }}
+   ---
+   
+   {{ .Recipe.Description }}
+   ```
+2. Create a `webhook-config.toml`
+   ```toml
+   # chowdown is a sample GitHub webhook to sync recipes to chowdown github repos
+   [webhook.chowdown_github_sync]
+   template_path = "/etc/mealie-webhook-handler/templates/chowdown-template.gotpl"
+   output = "github_pr"
+    
+   [webhook.chowdown_github_sync.output_options]
+   title = "chore: Sync recipe {{ .Recipe.Name }} from mealie"
+   body = """
+   Update recipe {{ .Recipe.Name }}
+   """
+   slug = "your-user/recipes"
+   source_branch = "sync/recipe/{{ .Recipe.Slug }}"
+   target_branch = "gh-pages"
+   recipe_path = "_recipes/{{ .Recipe.Slug }}.md"
+   image_path = "images/{{ .Recipe.Slug }}.webp"
+   commit_message = "chore: Sync {{ .Recipe.Name }} from mealie"
+    
+   [mealie]
+   api_url = "http://mealie/api"
+   ```
+3. Configure the webhook handler next to mealie
+   ```yaml
+   services:
+     mealie:
+     # mealie configuration
+     mealie-webhook-handler:
+       image: timoreymann/mealie-webhook-handler
+       restart: always
+       environment:
+         GITHUB_TOKEN: <personal access token>
+       command:
+         - mealie-webhook-handler
+         - --config-file
+         - /etc/mealie-webhook-handler/config.toml
+       volumes:
+         - webhook-config.toml:/etc/mealie-webhook-handler/config.toml
+         - ./webhook-templates:/etc/mealie-webhook-handler/templates
+    ```
 
 ## Usage
-<!-- Add how to use e.g. code samples etc. -->
 
-> TBD
+1. Navigate to your Mealie instance
+2. Go to `Settings > Data Management`
+3. Select `Recipe Actions`
+4. Click `Create`
+5. Fill out the form
+    - `Title`: *Sync to Chowdown*
+    - `URL`: *http://mealie-webhook-handler/webhook/chowdown_github_sync*
+    - `Action Type`: *post*
+6. On your recipe page open the actions and click on `Sync to Chowdown`
+7. A PR will be created in your chowdown repo
 
 ## Motivation
+
 <!-- Add bit of context why the project has been created -->
 
 ## Contributing
+
 I love your input! I want to make contributing to this project as easy and transparent as possible, whether it's:
 
 - Reporting a bug
@@ -43,12 +124,15 @@ To get started please read the [Contribution Guidelines](./CONTRIBUTING.md).
 ## Development
 
 ### Requirements
+
 <!-- Delete the ones not required -->
+
 - [GNU make](https://www.gnu.org/software/make/)
 - [Docker](https://docs.docker.com/get-docker/)
 - [Go](https://go.dev/doc/install)
 
 ### Test
+
 <!-- Add testing instructions -->
 
 ```sh
@@ -56,7 +140,9 @@ make test-coverage-report
 ```
 
 ### Build
+
 <!-- Add building instructions -->
+
 ```sh
 make build
 ```
