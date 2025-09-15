@@ -9,7 +9,7 @@ RUN if [[ "$(arch)" == "x86_64" ]]; then \
     chmod +x /bin/mealie-webhook-handler && \
     chown 1000:1000 /bin/mealie-webhook-handler
 
-FROM chainguard/wolfi-base
+FROM alpine
 LABEL org.opencontainers.image.title="mealie-webhook-handler"
 LABEL org.opencontainers.image.description="Webhook handler for recipes hosted on a mealie.io instance"
 LABEL org.opencontainers.image.ref.name="main"
