@@ -88,7 +88,7 @@ It's recommended to install it next to your mealie instance using docker-compose
          - --config-file
          - /etc/mealie-webhook-handler/config.toml
        volumes:
-         - webhook-config.toml:/etc/mealie-webhook-handler/config.toml
+         - ./webhook-config.toml:/etc/mealie-webhook-handler/config.toml
          - ./webhook-templates:/etc/mealie-webhook-handler/templates
     ```
 
@@ -100,7 +100,7 @@ It's recommended to install it next to your mealie instance using docker-compose
 4. Click `Create`
 5. Fill out the form
     - `Title`: *Sync to Chowdown*
-    - `URL`: *http://mealie-webhook-handler/webhook/chowdown_github_sync*
+    - `URL`: *http://mealie-webhook-handler:2025/webhook/chowdown_github_sync*
     - `Action Type`: *post*
 6. On your recipe page open the actions and click on `Sync to Chowdown`
 7. A PR will be created in your chowdown repo
