@@ -9,7 +9,7 @@ only_tags: &only_tags
 
 orbs:
   github-cli: circleci/github-cli@2.7.2
-  docker: circleci/docker@3.0.1
+  docker: circleci/docker@2.8.2
   codecov: codecov/codecov@5.4.3
   go: circleci/go@3.0.3
   github-utils: trustedshops-public/github-utils@1.1.3
@@ -76,7 +76,7 @@ jobs:
             echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
             docker buildx create --use
             make build-docker
-      - docker/update_description:
+      - docker/update-description:
           image: timoreymann/mealie-webhook-handler
           docker-username: DOCKER_USERNAME
           docker-password: DOCKER_TOKEN
@@ -95,7 +95,7 @@ publish-docker-image:
           echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
           docker buildx create --use
           make build-docker
-    - docker/update_description:
+    - docker/update-description:
         image: timoreymann/gitlab-ci-verify
         docker-username: DOCKER_USERNAME
         docker-password: DOCKER_TOKEN
