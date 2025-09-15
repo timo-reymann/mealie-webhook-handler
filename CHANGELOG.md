@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.0.2...v1.0.3) (2025-09-15)
+
+
+### Bug Fixes
+
+* Fix webhook handler copy ([f006483](https://github.com/timo-reymann/mealie-webhook-handler/commit/f00648361e3ebc07c0bc7fadf16bfaa41ca4e963))
+
 ## [1.0.2](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.0.1...v1.0.2) (2025-09-15)
 
 
