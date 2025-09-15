@@ -76,7 +76,7 @@ jobs:
             echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
             docker buildx create --use
             make build-docker
-      - docker/update-description:
+      - docker/update_description:
           image: timoreymann/mealie-webhook-handler
           docker-username: DOCKER_USERNAME
           docker-password: DOCKER_TOKEN
@@ -95,7 +95,7 @@ publish-docker-image:
           echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
           docker buildx create --use
           make build-docker
-    - docker/update-description:
+    - docker/update_description:
         image: timoreymann/gitlab-ci-verify
         docker-username: DOCKER_USERNAME
         docker-password: DOCKER_TOKEN
