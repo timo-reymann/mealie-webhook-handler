@@ -1,0 +1,18 @@
+[webhook.test]
+template_path = "template.gotpl"
+output = "github_pr"
+
+[webhook.test.output_options]
+title = "chore: Sync recipe"
+body = """
+Update recipe
+"""
+slug = "timo-reymann/recipes"
+source_branch = "sync/recipe/{{ .Recipe.Slug }}"
+target_branch = "gh-pages"
+recipe_path = "_recipes/{{ .Recipe.Slug }}.md"
+image_path = "images/{{ .Recipe.Slug }}.webp"
+commit_message = "Sync {{ .Recipe.Name }} from mealie"
+
+[mealie]
+api_url = "https://mealie.timo-reymann.de/api"

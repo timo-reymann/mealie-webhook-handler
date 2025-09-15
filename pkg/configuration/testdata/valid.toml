@@ -1,0 +1,13 @@
+[webhook.identifierA]
+template_path = "file/to/template.gotpl"
+output = "github_pr"
+
+[webhook.identifierA.output_options]
+foo = "bar"
+
+[webhook.identifierB]
+template_path = "file/to/template.gotpl"
+output = "github_pr"
+
+[webhook.identifierB.output_options]
+foo = "bar"

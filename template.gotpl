@@ -1,0 +1,21 @@
+---
+layout: recipe
+title: {{ .Recipe.Name }}
+{{- if .HasImage -}}
+image: images/{{ .Recipe.Slug }}.webp
+{{- end -}}
+tags: {{- range $index, $tag := .Recipe.Tags }} {{- if $index }},{{ end }} {{ $tag.Name }} {{- end }}
+
+ingredients:
+{{- range $val := .Recipe.RecipeIngredient }}
+  - {{ if $val.Quantity }} {{ $val.Quantity }}{{- end -}}{{- if $val.Unit }} {{ or $val.Unit.Abbreviation $val.Unit.Name }}{{- end }} {{ if or $val.Quantity $val.Unit }} {{- end }}{{ $val.Food.Name }}{{- if $val.Note }} {{ $val.Note }}{{- end }}
+{{- end }}
+
+
+directions:
+{{- range $val := .Recipe.RecipeInstructions }}
+  - {{ $val.Text }}
+{{- end }}
+---
+
+{{ .Recipe.Description }}
