@@ -125,7 +125,7 @@ workflows:
       - publish-docker-image:
           <<: *only_tags
           requires:
-            - build-cli
+            - build
       - attach-binaries-to-release:
           <<: *only_tags
           requires:
