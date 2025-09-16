@@ -33,9 +33,9 @@ It's recommended to install it next to your mealie instance using docker-compose
    ---
    layout: recipe
    title: {{ .Recipe.Name }}
-   {{- if .HasImage -}}
-   image: images/{{ .Recipe.Slug }}.webp
-   {{- end -}}
+   {{- if .HasImage }}
+   image: {{ .Recipe.Slug }}.webp
+   {{- end }}
    tags: {{- range $index, $tag := .Recipe.Tags }} {{- if $index }},{{ end }} {{ $tag.Name }} {{- end }}
    
    ingredients:
@@ -71,7 +71,7 @@ It's recommended to install it next to your mealie instance using docker-compose
    commit_message = "chore: Sync {{ .Recipe.Name }} from mealie"
     
    [mealie]
-   api_url = "http://mealie/api"
+   api_url = "http://mealie:9000/api"
    ```
 3. Configure the webhook handler next to mealie
    ```yaml
