@@ -87,6 +87,14 @@ type Tag struct {
 	Slug    string `json:"slug"`
 }
 
+// Category represents a category for a recipe
+type Category struct {
+	Id      string `json:"id"`
+	GroupId string `json:"group_id"`
+	Name    string `json:"name"`
+	Slug    string `json:"slug"`
+}
+
 // Settings represents the settings for the recipe.
 type Settings struct {
 	Public          bool `json:"public"`
@@ -114,7 +122,7 @@ type RecipeContent struct {
 	CookTime            *interface{}        `json:"cook_time"`
 	PerformTime         *interface{}        `json:"perform_time"`
 	Description         string              `json:"description"`
-	RecipeCategory      []string            `json:"recipe_category"`
+	RecipeCategory      []Category          `json:"recipe_category"`
 	Tags                []Tag               `json:"tags"`
 	Tools               []interface{}       `json:"tools"`
 	Rating              *interface{}        `json:"rating"`

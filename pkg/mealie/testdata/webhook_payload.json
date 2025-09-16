@@ -23,7 +23,14 @@
     "cook_time": null,
     "perform_time": null,
     "description": "Schnell gemacht, man braucht nur einen Wok, die Zutaten und ca. 30 Minuten. Dabei schmeckt es auch noch lecker und ist halbwegs gesund ;)",
-    "recipe_category": [],
+    "recipe_category": [
+      {
+        "id": "9e35ce54-24c6-46b0-9afb-385f093fd5cd",
+        "group_id": "5e582dd1-3eef-4389-a031-53e077e696b8",
+        "name": "omnivor",
+        "slug": "omnivor"
+      }
+    ],
     "tags": [],
     "tools": [],
     "rating": null,
