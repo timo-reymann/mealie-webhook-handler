@@ -1,3 +1,12 @@
+## [1.0.4](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.0.3...v1.0.4) (2025-09-16)
+
+
+### Bug Fixes
+
+* Fix parse args logic ([5c92abb](https://github.com/timo-reymann/mealie-webhook-handler/commit/5c92abba7cc93ce470f60cc26833c71c56b5f4d0))
+* Parse args on startup ([4a701c6](https://github.com/timo-reymann/mealie-webhook-handler/commit/4a701c6cd613ea91c5da3666ed8cb509885a8b94))
+* Parse args on startup ([b1c1209](https://github.com/timo-reymann/mealie-webhook-handler/commit/b1c1209e615c7395c88f6f2d0b6a32687c39051b))
+
 ## [1.0.3](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.0.2...v1.0.3) (2025-09-15)
 
 
