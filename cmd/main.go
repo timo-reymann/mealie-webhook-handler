@@ -16,6 +16,7 @@ func Execute() {
 	err := args.Parse(os.Args)
 	if err != nil {
 		fmt.Printf("Failed to parse args: %s\n", err.Error())
+		return
 	}
 
 	configVal, err := os.ReadFile(*configPath)
