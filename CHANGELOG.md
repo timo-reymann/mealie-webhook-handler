@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.0.4...v1.0.5) (2025-09-16)
+
+
+### Bug Fixes
+
+* Fix recipe category model ([feb786c](https://github.com/timo-reymann/mealie-webhook-handler/commit/feb786ce518e61321de201904c6c5336ce23eded))
+
 ## [1.0.4](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.0.3...v1.0.4) (2025-09-16)
 
 
