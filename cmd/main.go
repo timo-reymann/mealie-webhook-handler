@@ -11,15 +11,15 @@ import (
 )
 
 func Execute() {
-	args := flag.NewFlagSet("mealie-webhook-handler", flag.ExitOnError)
-	configPath := args.String("config-file", "webhooks.toml", "Path to the config file")
-	err := args.Parse(os.Args)
+	args := flag.NewFlagSet("mealie-webhook-handler", flag.ContinueOnError)
+	var configPath string
+	args.StringVar(&configPath, "config-file", "webhooks.toml", "Path to the config file")
+	err := args.Parse(os.Args[1:])
 	if err != nil {
-		fmt.Printf("Failed to parse args: %s\n", err.Error())
 		return
 	}
 
-	configVal, err := os.ReadFile(*configPath)
+	configVal, err := os.ReadFile(configPath)
 	if err != nil {
 		fmt.Printf("Failed to open config file: %s\n", err.Error())
 		os.Exit(1)
