@@ -24,7 +24,18 @@ mealie-webhook-handler
 - Customizable templates
 - Generic output support
 
+## **Purpose**
+This small service bridges [Mealie](https://mealie.io/) (self-hosted recipe manager) with external systems by:
+1. **Listening for webhooks** triggered by the user in the UI.
+2. **Rendering recipes** using customizable Go templates (e.g., for [Chowdown](https://chowdown.dev/)).
+3. **Pushing output** to destinations like GitHub repos (via PR)
+
+**Key Use Case**:
+Automate syncing Mealie recipes to a Chowdown-compatible GitHub repo (or other targets) with minimal manual effort.
+
 ## Want to contribute a new output?
+
+Right now the only supported output is GitHub via PR. If you have any other destinations feel free to either create an issue or contribute directly:
 
 1. Fork this repository
 2. Add a new output in `outputs/<your name>/main.go` (see `github_pr` for reference)
