@@ -1,3 +1,10 @@
+## [1.0.20](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.0.19...v1.0.20) (2025-09-28)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/google/go-github/v74 to v75 ([#24](https://github.com/timo-reymann/mealie-webhook-handler/issues/24)) ([11bcd38](https://github.com/timo-reymann/mealie-webhook-handler/commit/11bcd384a23de8112e4e43326faf4e90720bd47e))
+
 ## [1.0.19](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.0.18...v1.0.19) (2025-09-28)
 
 
