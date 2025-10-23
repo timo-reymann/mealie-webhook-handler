@@ -1,0 +1,3 @@
+cd ..
+GOOS=js GOARCH=wasm go build  -o playground/code.wasm wasm.go
+cd playground

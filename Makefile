@@ -50,6 +50,9 @@ build-openbsd: create-dist ## Build binaries for OpenBSD
 	@CGO_ENABLED=0 GOOS=openbsd GOARCH=amd64 go build -o $(BIN_PREFIX)openbsd-amd64 $(BUILD_ARGS)
     @CGO_ENABLED=0 GOOS=openbsd GOARCH=386 go build -o $(BIN_PREFIX)openbsd-i386 $(BUILD_ARGS)
 
+build-playground-wasm:
+	@GOOS=js GOARCH=wasm go build  -o playground/code.wasm wasm.go
+
 build-docker: ## Build docker image based on the built linux builds in the dist folder
 	@docker buildx build --tag timoreymann/mealie-webhook-handler:latest \
 		--platform linux/amd64,linux/arm/v7,linux/arm64 \
