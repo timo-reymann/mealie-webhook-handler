@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>mealie-webhook-handler Playground</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+
+        header {
+            height: 80px;
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            background: #bf3900;
+            color: white;
+        }
+
+        main {
+            height: calc(100% - 80px);
+            width: 100%;
+            display: flex;
+        }
+
+        section {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: stretch;
+        }
+
+        section > textarea {
+            flex-grow: 1;
+        }
+
+        h2 {
+            font-size: 20px;
+            text-align: center;
+            padding: 4px;
+        }
+
+        textarea {
+            width: 100%;
+            background: none;
+            color: inherit;
+            border: none;
+            outline: none;
+            resize: none;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+        }
+
+        #payload,
+        #template,
+        #rendered {
+            height: 100%;
+        }
+
+        #template,
+        #rendered {
+            flex-grow: 2;
+        }
+
+        #payload {
+            background: #111111;
+            color: white;
+            flex-grow: 1;
+        }
+
+        #rendered {
+            background: #444444;
+            color: white;
+        }
+
+        #template {
+            background: #222222;
+            color: white;
+        }
+
+        .loader {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+        }
+
+        .loader--text {
+            margin-left: 10px;
+        }
+
+        .loader--icon {
+            width: 20px;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: #bf3900;
+            box-shadow: 0 0 0 0 #0004;
+            animation: l2 1.5s infinite linear;
+            position: relative;
+        }
+
+        .loader--icon:before,
+        .loader--icon:after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            box-shadow: 0 0 0 0 #0004;
+            animation: inherit;
+            animation-delay: -0.5s;
+        }
+
+        .loader--icon:after {
+            animation-delay: -1s;
+        }
+
+        @keyframes l2 {
+            100% {
+                box-shadow: 0 0 0 40px #0000
+            }
+        }
+    </style>
+    <script src="./lib/alpine-3.12.0.min.js" defer></script>
+    <script src="lib/go_wasm_exec.js"></script>
+    <script>
+        const PAYLOAD_PRESETS = {
+            DE_JAEGERSCHNITZEL: "{ \n  \"action\": { \n    \"action_type\": \"post\", \n    \"title\": \"webhook echo\", \n    \"url\": \"https://webhook.site/ed6a0cc2-e328-42ce-a9bf-4c33909e9169\", \n    \"group_id\": \"5e582dd1-3eef-4389-a031-53e077e696b8\", \n    \"household_id\": \"49fce3b4-ebb0-49ee-b976-e8a0bc17c81e\", \n    \"id\": \"4b97f9ea-edb2-45ca-b487-372a465c7941\" \n }, \n  \"content\": { \n    \"id\": \"eab4543f-99a3-4031-9a02-e16de58f1183\", \n    \"user_id\": \"7c2f1e7c-8384-45aa-b3cc-849317f13993\", \n    \"household_id\": \"49fce3b4-ebb0-49ee-b976-e8a0bc17c81e\", \n    \"group_id\": \"5e582dd1-3eef-4389-a031-53e077e696b8\", \n    \"name\": \"Jägerschnitzel\", \n    \"slug\": \"jagerschnitzel\", \n    \"image\": \"jaegerschnitzel.jpg\", \n    \"recipe_servings\": 4.0, \n    \"recipe_yield_quantity\": 0.0, \n    \"recipe_yield\": \"\", \n    \"total_time\": null, \n    \"prep_time\": null, \n    \"cook_time\": null, \n    \"perform_time\": null, \n    \"description\": \"Zum Jäger schnitzel passen auch sehr gut Kroketten oder Pommes. Diese\\nkönnen parallel im Ofen gebacken werden. Wenn es schnell gehen soll, geht auch Kartoffelpüree.\\n\\nDamit die Soße extra cremig wird, kann man noch mit etwas Mehl nach-dicken.\", \n    \"recipe_category\": [ \n { \n        \"id\": \"9e35ce54-24c6-46b0-9afb-385f093fd5cd\", \n        \"group_id\": \"5e582dd1-3eef-4389-a031-53e077e696b8\", \n        \"name\": \"omnivor\", \n        \"slug\": \"omnivor\" \n } , \n { \n        \"id\": \"55d4f761-bcd7-4159-968f-4793ad96f2a1\", \n        \"group_id\": \"5e582dd1-3eef-4389-a031-53e077e696b8\", \n        \"name\": \"deutsch\", \n        \"slug\": \"deutsch\" \n } \n ], \n    \"tags\": [ \n { \n        \"id\": \"7a6b2530-a811-4741-a8b0-a6147cc1844c\", \n        \"group_id\": \"5e582dd1-3eef-4389-a031-53e077e696b8\", \n        \"name\": \"Schnitzel\", \n        \"slug\": \"schnitzel\" \n } \n ], \n    \"tools\": [], \n    \"rating\": null, \n    \"org_url\": null, \n    \"date_added\": \"2025-09-16\", \n    \"date_updated\": \"2025-09-19T21:45:00.888948+00:00\", \n    \"created_at\": \"2025-09-16T14:44:07.573876+00:00\", \n    \"updated_at\": \"2025-09-19T21:45:00.891141+00:00\", \n    \"last_made\": \"2025-09-19T21:45:00.731556+00:00\", \n    \"recipe_ingredient\": [ \n { \n        \"quantity\": null, \n        \"unit\": null, \n        \"food\": { \n          \"id\": \"05cfd7e8-2c4b-49ea-8009-1827708e1c05\", \n          \"name\": \"Muskatnuss\", \n          \"plural_name\": \"Muskatnuss\", \n          \"description\": \"\", \n          \"extras\": {}, \n          \"label_id\": null, \n          \"aliases\": [], \n          \"households_with_ingredient_food\": [], \n          \"label\": null, \n          \"created_at\": \"2025-09-14T13:11:05.813819+00:00\", \n          \"updated_at\": \"2025-09-14T13:11:05.813822+00:00\" \n } , \n        \"note\": null, \n        \"display\": \"Muskatnuss\", \n        \"title\": null, \n        \"original_text\": \"Muskatnuss\", \n        \"reference_id\": \"6046e218-ca84-4de7-85da-20bebfb470a5\" \n } , \n { \n        \"quantity\": null, \n        \"unit\": null, \n        \"food\": { \n          \"id\": \"10964d75-8169-4f8e-a13d-89db8b04244f\", \n          \"name\": \"Pfeffer\", \n          \"plural_name\": null, \n          \"description\": \"\", \n          \"extras\": {}, \n          \"label_id\": null, \n          \"aliases\": [], \n          \"households_with_ingredient_food\": [], \n          \"label\": null, \n          \"created_at\": \"2025-09-14T17:36:08.175927+00:00\", \n          \"updated_at\": \"2025-09-14T17:36:08.175934+00:00\" \n } , \n        \"note\": null, \n        \"display\": \"Pfeffer\", \n        \"title\": null, \n        \"original_text\": \"Pfeffer\", \n        \"reference_id\": \"dfe4e639-d54e-4e4c-8a01-3199c27b4ee7\" \n }, \n { \n        \"quantity\": null, \n        \"unit\": null, \n        \"food\": { \n          \"id\": \"015177d7-e2ea-4cd3-892d-af7b38214f42\", \n          \"name\": \"Salz\", \n          \"plural_name\": null, \n          \"description\": \"\", \n          \"extras\": {}, \n          \"label_id\": null, \n          \"aliases\": [], \n          \"households_with_ingredient_food\": [ \n            \"timo-filipe\" \n ], \n          \"label\": null, \n          \"created_at\": \"2025-09-14T17:36:06.793617+00:00\", \n          \"updated_at\": \"2025-09-14T17:36:06.793620+00:00\" \n } , \n        \"note\": null, \n        \"display\": \"Salz\", \n        \"title\": null, \n        \"original_text\": \"Salz\", \n        \"reference_id\": \"a1d52263-34ec-49d4-812d-016def499f52\" \n }, \n { \n        \"quantity\": null, \n        \"unit\": null, \n        \"food\": { \n          \"id\": \"d800bd81-5ce8-4443-9e9b-b16aac4f0241\", \n          \"name\": \"Paprikapulver\", \n          \"plural_name\": null, \n          \"description\": \"\", \n          \"extras\": {}, \n          \"label_id\": null, \n          \"aliases\": [], \n          \"households_with_ingredient_food\": [], \n          \"label\": null, \n          \"created_at\": \"2025-09-14T18:01:02.850084+00:00\", \n          \"updated_at\": \"2025-09-14T18:01:02.850087+00:00\" \n } , \n        \"note\": null, \n        \"display\": \"Paprikapulver\", \n        \"title\": null, \n        \"original_text\": \"Paprikapulver\", \n        \"reference_id\": \"631098a7-38d3-4ba3-9e24-2401ff47dabd\" \n }, \n { \n        \"quantity\": 4.0, \n        \"unit\": { \n          \"id\": \"c609904d-ef29-4951-9a91-3ca3d078ac44\", \n          \"name\": \"Stück\", \n          \"plural_name\": null, \n          \"description\": \"\", \n          \"extras\": {}, \n          \"fraction\": true, \n          \"abbreviation\": \"\", \n          \"plural_abbreviation\": \"\", \n          \"use_abbreviation\": false, \n          \"aliases\": [], \n          \"created_at\": \"2025-09-14T18:09:35.152576+00:00\", \n          \"updated_at\": \"2025-09-14T18:09:35.152578+00:00\" \n } , \n        \"food\": { \n          \"id\": \"4e9308a1-c5ac-4373-bb78-692d948224ed\", \n          \"name\": \"Schweineschnitzel\", \n          \"plural_name\": null, \n          \"description\": \"\", \n          \"extras\": {}, \n          \"label_id\": null, \n          \"aliases\": [], \n          \"households_with_ingredient_food\": [], \n          \"label\": null, \n          \"created_at\": \"2025-09-16T15:06:53.319557+00:00\", \n          \"updated_at\": \"2025-09-16T15:06:53.319563+00:00\" \n }, \n        \"note\": null, \n        \"display\": \"4 Stück Schweineschnitzel\", \n        \"title\": null, \n        \"original_text\": \"4 Schweineschnitzel\", \n        \"reference_id\": \"120461f4-d779-4e30-8447-49039007d687\" \n }, \n { \n        \"quantity\": 250.0, \n        \"unit\": { \n          \"id\": \"383a76cf-afbf-43d1-9953-9e375ab05525\", \n          \"name\": \"Gramm\", \n          \"plural_name\": \"Gramm\", \n          \"description\": \"\", \n          \"extras\": {}, \n          \"fraction\": true, \n          \"abbreviation\": \"g\", \n          \"plural_abbreviation\": null, \n          \"use_abbreviation\": false, \n          \"aliases\": [], \n          \"created_at\": \"2025-09-14T17:34:42.189408+00:00\", \n          \"updated_at\": \"2025-09-14T17:34:42.189411+00:00\" \n } , \n        \"food\": { \n          \"id\": \"7dbdc3a8-e29b-49fe-bec0-892924466882\", \n          \"name\": \"Pilze\", \n          \"plural_name\": null, \n          \"description\": \"\", \n          \"extras\": {}, \n          \"label_id\": null, \n          \"aliases\": [], \n          \"households_with_ingredient_food\": [], \n          \"label\": null, \n          \"created_at\": \"2025-09-16T15:06:59.791232+00:00\", \n          \"updated_at\": \"2025-09-16T15:06:59.791236+00:00\" \n }, \n        \"note\": null, \n        \"display\": \"250 Gramm Pilze\", \n        \"title\": null, \n        \"original_text\": \"250g Pilze\", \n        \"reference_id\": \"32bdd855-0842-4e52-b41d-51b93db98eef\" \n }, \n { \n        \"quantity\": 4.0, \n        \"unit\": { \n          \"id\": \"9d8495ff-725a-4c58-9cfc-13274846313e\", \n          \"name\": \"Esslöffel\", \n          \"plural_name\": \"Esslöffel\", \n          \"description\": \"\", \n          \"extras\": {}, \n          \"fraction\": true, \n          \"abbreviation\": \"EL\", \n          \"plural_abbreviation\": null, \n          \"use_abbreviation\": false, \n          \"aliases\": [], \n          \"created_at\": \"2025-09-14T17:34:42.156283+00:00\", \n          \"updated_at\": \"2025-09-14T17:34:42.156288+00:00\" \n } , \n        \"food\": { \n          \"id\": \"6df4266a-0ceb-455a-bade-51f1713f37b3\", \n          \"name\": \"Butter\", \n          \"plural_name\": \"Butter\", \n          \"description\": \"\", \n          \"extras\": {}, \n          \"label_id\": null, \n          \"aliases\": [], \n          \"households_with_ingredient_food\": [], \n          \"label\": null, \n          \"created_at\": \"2025-09-14T13:11:03.458443+00:00\", \n          \"updated_at\": \"2025-09-14T13:11:03.458445+00:00\" \n }, \n        \"note\": null, \n        \"display\": \"4 Esslöffel Butter\", \n        \"title\": null, \n        \"original_text\": \"4 EL Butter\", \n        \"reference_id\": \"d0eb3c01-fb9a-46c0-9d17-609a8875773a\" \n }, \n { \n        \"quantity\": 1.0, \n        \"unit\": { \n          \"id\": \"f7ca34b5-190a-4617-b587-9df99dbc7fe9\", \n          \"name\": \"Teelöffel\", \n          \"plural_name\": \"Teelöffel\", \n          \"description\": \"\", \n          \"extras\": {}, \n          \"fraction\": true, \n          \"abbreviation\": \"TL\", \n          \"plural_abbreviation\": null, \n          \"use_abbreviation\": false, \n          \"aliases\": [], \n          \"created_at\": \"2025-09-14T17:34:42.148298+00:00\", \n          \"updated_at\": \"2025-09-14T17:34:42.148302+00:00\" \n } , \n        \"food\": { \n          \"id\": \"25455ba1-016b-4d6a-a93f-1a2cd62b7acf\", \n          \"name\": \"Honig\", \n          \"plural_name\": null, \n          \"description\": \"\", \n          \"extras\": {}, \n          \"label_id\": null, \n          \"aliases\": [], \n          \"households_with_ingredient_food\": [], \n          \"label\": null, \n          \"created_at\": \"2025-09-16T15:07:09.329560+00:00\", \n          \"updated_at\": \"2025-09-16T15:07:09.329562+00:00\" \n }, \n        \"note\": null, \n        \"display\": \"1 Teelöffel Honig\", \n        \"title\": null, \n        \"original_text\": \"1 TL Honig\", \n        \"reference_id\": \"b3c37f82-a898-43aa-afa3-b5da7e472dc8\" \n }, \n { \n        \"quantity\": 200.0, \n        \"unit\": { \n          \"id\": \"55047349-5efd-4ab7-85a8-977e953da322\", \n          \"name\": \"Milliliter\", \n          \"plural_name\": \"Milliliter\", \n          \"description\": \"\", \n          \"extras\": {}, \n          \"fraction\": true, \n          \"abbreviation\": \"ml\", \n          \"plural_abbreviation\": null, \n          \"use_abbreviation\": false, \n          \"aliases\": [], \n          \"created_at\": \"2025-09-14T17:34:42.177819+00:00\", \n          \"updated_at\": \"2025-09-14T17:34:42.177823+00:00\" \n } , \n        \"food\": { \n          \"id\": \"ff7d2d80-fa65-434f-a163-4098575c8edf\", \n          \"name\": \"Gemüsebrühe\", \n          \"plural_name\": \"Gemüsebrüchen\", \n          \"description\": \"\", \n          \"extras\": {}, \n          \"label_id\": null, \n          \"aliases\": [], \n          \"households_with_ingredient_food\": [], \n          \"label\": null, \n          \"created_at\": \"2025-09-14T13:11:11.165762+00:00\", \n          \"updated_at\": \"2025-09-14T13:11:11.165767+00:00\" \n }, \n        \"note\": null, \n        \"display\": \"200 Milliliter Gemüsebrüchen\", \n        \"title\": null, \n        \"original_text\": \"200ml Brüche\", \n        \"reference_id\": \"4be46eb4-3e2c-40a4-92c7-ab62292c9264\" \n }, \n { \n        \"quantity\": 300.0, \n        \"unit\": { \n          \"id\": \"55047349-5efd-4ab7-85a8-977e953da322\", \n          \"name\": \"Milliliter\", \n          \"plural_name\": \"Milliliter\", \n          \"description\": \"\", \n          \"extras\": {}, \n          \"fraction\": true, \n          \"abbreviation\": \"ml\", \n          \"plural_abbreviation\": null, \n          \"use_abbreviation\": false, \n          \"aliases\": [], \n          \"created_at\": \"2025-09-14T17:34:42.177819+00:00\", \n          \"updated_at\": \"2025-09-14T17:34:42.177823+00:00\" \n } , \n        \"food\": { \n          \"id\": \"e54b6c00-bc76-422a-9425-98ec0bfd6908\", \n          \"name\": \"Rahmsoße\", \n          \"plural_name\": null, \n          \"description\": \"\", \n          \"extras\": {}, \n          \"label_id\": null, \n          \"aliases\": [], \n          \"households_with_ingredient_food\": [], \n          \"label\": null, \n          \"created_at\": \"2025-09-16T15:07:19.622730+00:00\", \n          \"updated_at\": \"2025-09-16T15:07:19.622733+00:00\" \n }, \n        \"note\": null, \n        \"display\": \"300 Milliliter Rahmsoße\", \n        \"title\": null, \n        \"original_text\": \"300ml Rahmsoße\", \n        \"reference_id\": \"e2490cfe-a001-4a66-81b4-df520bef5813\" \n }, \n { \n        \"quantity\": 50.0, \n        \"unit\": { \n          \"id\": \"55047349-5efd-4ab7-85a8-977e953da322\", \n          \"name\": \"Milliliter\", \n          \"plural_name\": \"Milliliter\", \n          \"description\": \"\", \n          \"extras\": {}, \n          \"fraction\": true, \n          \"abbreviation\": \"ml\", \n          \"plural_abbreviation\": null, \n          \"use_abbreviation\": false, \n          \"aliases\": [], \n          \"created_at\": \"2025-09-14T17:34:42.177819+00:00\", \n          \"updated_at\": \"2025-09-14T17:34:42.177823+00:00\" \n } , \n        \"food\": { \n          \"id\": \"9385eea1-e2b8-4290-a274-b809948aa136\", \n          \"name\": \"Sahne\", \n          \"plural_name\": \"Sahne\", \n          \"description\": \"\", \n          \"extras\": {}, \n          \"label_id\": null, \n          \"aliases\": [], \n          \"households_with_ingredient_food\": [], \n          \"label\": null, \n          \"created_at\": \"2025-09-14T13:11:03.469245+00:00\", \n          \"updated_at\": \"2025-09-14T13:11:03.469246+00:00\" \n }, \n        \"note\": null, \n        \"display\": \"50 Milliliter Sahne\", \n        \"title\": null, \n        \"original_text\": \"50ml Sahne\", \n        \"reference_id\": \"7683b6bf-c5bf-415b-bb8b-93e80349b7de\" \n } \n ], \n    \"recipe_instructions\": [ \n { \n        \"id\": \"026c66dd-bbfb-42d1-abc3-f254a730c82d\", \n        \"title\": \"\", \n        \"summary\": \"\", \n        \"text\": \"Butter in der Pfanne erhitzen\", \n        \"ingredient_references\": [] \n } , \n { \n        \"id\": \"082e5f96-dd97-4413-a96d-f8eb3d9a5db6\", \n        \"title\": \"\", \n        \"summary\": \"\", \n        \"text\": \"Schnitzel platt klopfen und mit Salz und Pfeffer auf einer Seite und Paprikapulver auf der anderen Seite würzen\", \n        \"ingredient_references\": [] \n } , \n { \n        \"id\": \"b9082fe7-de36-4687-9cca-608bb943a243\", \n        \"title\": \"\", \n        \"summary\": \"\", \n        \"text\": \"Goldbraun anbraten und die Schnitzel aus der Pfanne nehmen\", \n        \"ingredient_references\": [] \n } , \n { \n        \"id\": \"2cfcbd1c-6d02-4cf0-9453-abdb1db489ac\", \n        \"title\": \"\", \n        \"summary\": \"\", \n        \"text\": \"Pilze goldbraun anbraten und mit Honig karamellisieren\", \n        \"ingredient_references\": [] \n } , \n { \n        \"id\": \"89c07c9a-069c-489e-b33e-cfe5f8ed9305\", \n        \"title\": \"\", \n        \"summary\": \"\", \n        \"text\": \"Mit Brühe und Rahmsoße ablöschen\", \n        \"ingredient_references\": [] \n } , \n { \n        \"id\": \"36958a45-96df-4604-9375-983541462752\", \n        \"title\": \"\", \n        \"summary\": \"\", \n        \"text\": \"Kurz aufkochen lassen\", \n        \"ingredient_references\": [] \n } , \n { \n        \"id\": \"384c1447-1683-429f-b5f2-f7a5df042d9c\", \n        \"title\": \"\", \n        \"summary\": \"\", \n        \"text\": \"Mit Muskatnuss, Pfeffer und Salz abschmecken\", \n        \"ingredient_references\": [] \n } , \n { \n        \"id\": \"29119b10-7721-459f-8ef6-b4d9220e784e\", \n        \"title\": \"\", \n        \"summary\": \"\", \n        \"text\": \"Kurz einköcheln lassen und einen Schuss Sahne dazu geben\", \n        \"ingredient_references\": [] \n } , \n { \n        \"id\": \"98e3b005-99fd-4c2e-9527-69a7441e7f61\", \n        \"title\": \"\", \n        \"summary\": \"\", \n        \"text\": \"Schnitzel wieder in die Pfanne geben und köcheln lassen\", \n        \"ingredient_references\": [] \n } \n ], \n    \"nutrition\": { \n      \"calories\": null, \n      \"carbohydrate_content\": null, \n      \"cholesterol_content\": null, \n      \"fat_content\": null, \n      \"fiber_content\": null, \n      \"protein_content\": null, \n      \"saturated_fat_content\": null, \n      \"sodium_content\": null, \n      \"sugar_content\": null, \n      \"trans_fat_content\": null, \n      \"unsaturated_fat_content\": null \n }, \n    \"settings\": { \n      \"public\": true, \n      \"show_nutrition\": false, \n      \"show_assets\": false, \n      \"landscape_view\": false, \n      \"disable_comments\": false, \n      \"locked\": false \n }, \n    \"assets\": [], \n    \"notes\": [], \n    \"extras\": {}, \n    \"comments\": [] \n }, \n  \"recipe_scale\": 1.0 \n }\n ",
+            EN_CHAAP_MASALA: "{\"action\": {\"action_type\": \"post\", \"title\": \"https://webhook.site/41358222-3323-4401-abac-ed68569b2710\", \"url\": \"https://webhook.site/41358222-3323-4401-abac-ed68569b2710\", \"group_id\": \"ad50c208-208c-4ee4-9898-71218e4af22e\", \"household_id\": \"365ca646-7daa-41ae-bf08-ffe099a234d4\", \"id\": \"67b9621a-8f2d-43bf-a061-266409e20e08\"}, \"content\": {\"id\": \"b04ef17c-bc64-461d-bb2b-37025f2819d3\", \"user_id\": \"7517b565-7fa5-4c2e-b1a6-514a81e1ac36\", \"household_id\": \"365ca646-7daa-41ae-bf08-ffe099a234d4\", \"group_id\": \"ad50c208-208c-4ee4-9898-71218e4af22e\", \"name\": \"Soya Chaap Masala Recipe\", \"slug\": \"soya-chaap-masala-recipe\", \"image\": \"91BF\", \"recipe_servings\": 4.0, \"recipe_yield_quantity\": 0.0, \"recipe_yield\": \"\", \"total_time\": \"50 minutes\", \"prep_time\": \"10 minutes\", \"cook_time\": null, \"perform_time\": \"20 minutes\", \"description\": \"A delicious Soya Chaap Recipe that\u2019s tangy, hearty, and bursting with flavors and aroma. This Soya Chaap Masala features tender, chewy, and meaty soya chaap. The gravy is made with a rich onion-tomato masala base, cooked with yogurt & spices marinated soya chaap chunks, fresh herbs like coriander, mint, and a medley of spices. Best served with steamed rice or roti or paratha.\", \"recipe_category\": [], \"tags\": [], \"tools\": [], \"rating\": null, \"org_url\": \"https://www-vegrecipesofindia-com.translate.goog/soya-chaap-recipe/?_x_tr_sl=en&_x_tr_tl=hi&_x_tr_hl=hi&_x_tr_pto=tc\", \"date_added\": \"2025-10-26\", \"date_updated\": \"2025-10-26T09:01:24.551738+00:00\", \"created_at\": \"2025-10-26T09:01:24.554454+00:00\", \"updated_at\": \"2025-10-26T09:01:24.554455+00:00\", \"last_made\": null, \"recipe_ingredient\": [{\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"275 grams soy chaap sticks (- or 5 sticks, chopped)\", \"display\": \"275 grams soy chaap sticks (- or 5 sticks, chopped)\", \"title\": null, \"original_text\": null, \"reference_id\": \"911cb1aa-e776-430f-a926-4f717a20f9eb\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"\u00bd teaspoon turmeric powder\", \"display\": \"\u00bd teaspoon turmeric powder\", \"title\": null, \"original_text\": null, \"reference_id\": \"dcd4b025-967a-4773-b7c4-83e1bae55a0c\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"1 teaspoon Red Chilli Powder\", \"display\": \"1 teaspoon Red Chilli Powder\", \"title\": null, \"original_text\": null, \"reference_id\": \"6a53632e-c162-4d4f-bd0e-1b8bc671324e\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"1 teaspoon Cumin Powder\", \"display\": \"1 teaspoon Cumin Powder\", \"title\": null, \"original_text\": null, \"reference_id\": \"fc77c848-053a-4d1b-954d-11e67f7b8ac9\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"2 teaspoons Coriander Powder\", \"display\": \"2 teaspoons Coriander Powder\", \"title\": null, \"original_text\": null, \"reference_id\": \"be3db161-a523-4dc8-a466-4206cd19d0c0\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"\u00bc teaspoon Garam Masala\", \"display\": \"\u00bc teaspoon Garam Masala\", \"title\": null, \"original_text\": null, \"reference_id\": \"c72edecb-c779-4381-b95c-da240c806d12\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"2 teaspoons Ginger Garlic Paste\", \"display\": \"2 teaspoons Ginger Garlic Paste\", \"title\": null, \"original_text\": null, \"reference_id\": \"6c15d169-c863-4da4-a83b-17f3590b7b06\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"1 teaspoon salt (or add according to taste)\", \"display\": \"1 teaspoon salt (or add according to taste)\", \"title\": null, \"original_text\": null, \"reference_id\": \"b2e6f5d3-7dbe-4def-b287-a00994a04b50\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"\u00bd cup or (125 grams) Curd (yogurt) - whisked or beaten until smooth)\", \"display\": \"\u00bd cup or (125 grams) Curd (yogurt) - whisked or beaten until smooth)\", \"title\": null, \"original_text\": null, \"reference_id\": \"69b33ef7-914f-448b-85f9-4abf9b76b55e\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"3 tablespoons oil (- can also use 2 tablespoons oil)\", \"display\": \"3 tablespoons oil (- can also use 2 tablespoons oil)\", \"title\": null, \"original_text\": null, \"reference_id\": \"20987def-80e9-48b7-93b3-a9f0130fd8d2\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"1 inch cinnamon\", \"display\": \"1 inch cinnamon\", \"title\": null, \"original_text\": null, \"reference_id\": \"fbb0a090-a2ad-4a15-bc7f-3c9836e228e2\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"3 cloves\", \"display\": \"3 cloves\", \"title\": null, \"original_text\": null, \"reference_id\": \"f5022ed0-86e9-4b66-bcca-7001b96a59bb\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"2 green cardamoms (- lightly crushed)\", \"display\": \"2 green cardamoms (- lightly crushed)\", \"title\": null, \"original_text\": null, \"reference_id\": \"d0a19328-a569-4b3a-b82f-d360b26c3f2e\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"1 tej patta (- halved)\", \"display\": \"1 tej patta (- halved)\", \"title\": null, \"original_text\": null, \"reference_id\": \"11cc61a4-d77e-4e18-b3d1-77b7dffe965e\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"5 black peppercorns\", \"display\": \"5 black peppercorns\", \"title\": null, \"original_text\": null, \"reference_id\": \"301c9d38-e8cb-42e3-be13-f6d0f66d2c4b\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"1 cup or (110 grams) onions (- finely chopped)\", \"display\": \"1 cup or (110 grams) onions (- finely chopped)\", \"title\": null, \"original_text\": null, \"reference_id\": \"015f970c-bb80-4d7c-9fe5-c09fc16fce69\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"\u00bd cup or (80 grams) tomatoes (- finely chopped)\", \"display\": \"\u00bd cup or (80 grams) tomatoes (- finely chopped)\", \"title\": null, \"original_text\": null, \"reference_id\": \"b1cdd8ea-af0f-42c8-8f75-7559ba9bfe7a\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"1 cup water\", \"display\": \"1 cup water\", \"title\": null, \"original_text\": null, \"reference_id\": \"45dae990-42bb-4be8-8679-c5e23a144437\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"1 tablespoon coriander leaves (- chopped)\", \"display\": \"1 tablespoon coriander leaves (- chopped)\", \"title\": null, \"original_text\": null, \"reference_id\": \"35ee846b-58e7-4512-8678-b9c40752607f\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"1 tablespoon mint leaves (- chopped)\", \"display\": \"1 tablespoon mint leaves (- chopped)\", \"title\": null, \"original_text\": null, \"reference_id\": \"3d3b97cf-9e62-44c5-b2d9-ce8c6d2efb1d\"}, {\"quantity\": 0.0, \"unit\": null, \"food\": null, \"note\": \"1 to 2 tablespoons mint leaves (or 2 tablespoons chopped coriander leaves)\", \"display\": \"1 to 2 tablespoons mint leaves (or 2 tablespoons chopped coriander leaves)\", \"title\": null, \"original_text\": null, \"reference_id\": \"5465f059-ddde-4eba-b091-ec9167cd60ac\"}], \"recipe_instructions\": [{\"id\": \"1840e02c-af67-4633-a80f-1b9acb0e931e\", \"title\": \"\", \"summary\": \"\", \"text\": \"Marinating Soya Chaap\", \"ingredient_references\": []}, {\"id\": \"9a881713-d9a3-4b6e-b831-06c5ebe673fc\", \"title\": \"\", \"summary\": \"\", \"text\": \"Remove the sticks from each chaap and discard them. Squeeze each chaap lightly to get rid of the brine.\", \"ingredient_references\": []}, {\"id\": \"e0b4faa9-8ef7-4bda-9b5d-2cde33b6db4e\", \"title\": \"\", \"summary\": \"\", \"text\": \"Place them in a bowl and rinse thoroughly in fresh water a few times. Press lightly to remove any extra water. Drain all of the water and set aside.The rinsing helps to remove the brine flavor if any. Additionally, make sure to follow the package instructions to prep them.\", \"ingredient_references\": []}, {\"id\": \"eefce1c8-4fd3-48f8-8c90-f901ff30664a\", \"title\": \"\", \"summary\": \"\", \"text\": \"Chop the chaap into bite-sized pieces or chunks. Do not chop them small as they disintegrate while cooking.\", \"ingredient_references\": []}, {\"id\": \"dca23936-fe99-4053-b341-fc6298cf409e\", \"title\": \"\", \"summary\": \"\", \"text\": \"Take the chopped soya chaap in a mixing bowl.\", \"ingredient_references\": []}, {\"id\": \"c1f50762-1f2d-412d-bfb6-0126148f2c7e\", \"title\": \"\", \"summary\": \"\", \"text\": \"Add turmeric powder, red chilli powder, cumin powder, coriander power, garam masala powder, ginger garlic paste, salt and beaten curd to the soy chaap pieces.\", \"ingredient_references\": []}, {\"id\": \"4fc33253-75e2-4994-9e56-fc69600ac8b7\", \"title\": \"\", \"summary\": \"\", \"text\": \"Gently mix and marinate for 20 to 30 minutes.\", \"ingredient_references\": []}, {\"id\": \"fe98116e-bc84-4f57-afb0-3842337a46b5\", \"title\": \"\", \"summary\": \"\", \"text\": \"Meanwhile prep further by chopping onions and tomatoes.\", \"ingredient_references\": []}, {\"id\": \"1c5fd7f8-9ad7-40dd-9e4d-14431fb5db74\", \"title\": \"\", \"summary\": \"\", \"text\": \"Making Soya Chaap Masala\", \"ingredient_references\": []}, {\"id\": \"e5375ad8-d935-451f-9b48-7b130d4db74b\", \"title\": \"\", \"summary\": \"\", \"text\": \"Heat oil in a pan or pot. When the oil becomes moderately hot, add the whole spices - cinnamon, cloves, green cardamom (lightly crushed), tej patta and black peppercorns.\", \"ingredient_references\": []}, {\"id\": \"c5d1e495-5e5c-42da-b447-ccc8f30bfa35\", \"title\": \"\", \"summary\": \"\", \"text\": \"Fry these spices in oil lightly until fragrant. Make sure you do not brown or burn them.\", \"ingredient_references\": []}, {\"id\": \"7deffdd9-7ad9-40fd-9e9d-a8b6679b6c5f\", \"title\": \"\", \"summary\": \"\", \"text\": \"Next add finely chopped onions and saut\u00e9 until golden.\", \"ingredient_references\": []}, {\"id\": \"7bc382ea-d6dd-411b-95cc-1fc5e6430985\", \"title\": \"\", \"summary\": \"\", \"text\": \"Add finely chopped tomatoes. Mix well and saut\u00e9 the tomatoes until they soften.\", \"ingredient_references\": []}, {\"id\": \"cfaf899a-48ba-4266-9c22-d75c71a1e376\", \"title\": \"\", \"summary\": \"\", \"text\": \"Sprinkle water if the tomatoes stick on to the pan and deglaze.\", \"ingredient_references\": []}, {\"id\": \"d526b5f1-0af9-49c0-a6bf-fd76c56660b4\", \"title\": \"\", \"summary\": \"\", \"text\": \"Turn off heat and add marinated soy chaap.\", \"ingredient_references\": []}, {\"id\": \"c708c89c-469a-4b3d-a137-259eb8c357b3\", \"title\": \"\", \"summary\": \"\", \"text\": \"Mix thoroughly.\", \"ingredient_references\": []}, {\"id\": \"c635a150-0776-4f64-a06f-7f88854038c3\", \"title\": \"\", \"summary\": \"\", \"text\": \"Switch on the heat and saut\u00e9 on a low to medium-low heat, stirring often for 5 to 6 minutes or until you see oil specks on the sides or top of the masala.\", \"ingredient_references\": []}, {\"id\": \"ddf56e4f-abd8-4804-a40e-26798e67e04d\", \"title\": \"\", \"summary\": \"\", \"text\": \"Add the chopped mint, coriander leaves and mix.\", \"ingredient_references\": []}, {\"id\": \"23d6b224-37c9-4ed0-8084-12e6267ba5be\", \"title\": \"\", \"summary\": \"\", \"text\": \"Add water and stir to combine.\", \"ingredient_references\": []}, {\"id\": \"4d69aa6c-f2a1-4bef-aa95-bbdb02ce745c\", \"title\": \"\", \"summary\": \"\", \"text\": \"Cover pan with a lid and simmer the Soya Chaap Curry for 10 minutes on low to medium-low heat.\", \"ingredient_references\": []}, {\"id\": \"c4f6a021-7e7b-461d-947a-ee03763cd5d9\", \"title\": \"\", \"summary\": \"\", \"text\": \"Once the cooking is done, turn off the heat. Do ensure that the chaap is cooked properly and must not taste raw or undercooked.\", \"ingredient_references\": []}, {\"id\": \"f75b21bd-9355-4992-a3c3-b58c4152090f\", \"title\": \"\", \"summary\": \"\", \"text\": \"Check the taste and add a few pinches of salt if needed. Remember that salt rounds up the flavors of the spices and yogurt in this recipe. If the salt is less the flavors would feel lacking. So it is important that correct amount of salt is added.\", \"ingredient_references\": []}, {\"id\": \"819ca9aa-46ea-4005-b188-a85d38f7d11a\", \"title\": \"\", \"summary\": \"\", \"text\": \"Garnish Soya Chaap Masala with chopped mint or coriander leaves. Serve the Soya Chaap Curry with steamed basmati rice, roti, paratha, naan or bread.\", \"ingredient_references\": []}], \"nutrition\": {\"calories\": \"265\", \"carbohydrate_content\": \"13\", \"cholesterol_content\": \"4\", \"fat_content\": \"17\", \"fiber_content\": \"5\", \"protein_content\": \"16\", \"saturated_fat_content\": \"3\", \"sodium_content\": \"1071\", \"sugar_content\": \"3\", \"trans_fat_content\": null, \"unsaturated_fat_content\": \"14\"}, \"settings\": {\"public\": false, \"show_nutrition\": false, \"show_assets\": false, \"landscape_view\": false, \"disable_comments\": false, \"locked\": false}, \"assets\": [], \"notes\": [], \"extras\": {}, \"comments\": []}, \"recipe_scale\": 1.0}"
+        }
+
+        function app() {
+            const go = new Go();
+
+            return {
+                template: "--- \nlayout: recipe \ntitle: {{ .Recipe.Name }} \n{{- if .HasImage }} \nimage: {{ .Recipe.Slug }}.webp \n{{- end }} \ntags: {{- range $index, $tag := .Recipe.Tags }} {{- if $index }},{{ end }} {{ $tag.Name }} {{- end }}, {{- range $index, $cat := .Recipe.RecipeCategory }} {{- if $index }},{{ end }} {{ $cat.Name }} {{- end }} \n \ningredients: \n{{- range $val := .Recipe.RecipeIngredient }} \n  - {{ if $val.HasQuantity }} {{ $val.Quantity }}{{- end -}}{{- if $val.Unit }} {{ or $val.Unit.Abbreviation $val.Unit.Name }}{{- end }} {{ if or $val.Quantity $val.Unit }} {{- end }}{{ $val.Food.Name }}{{- if $val.Note }} {{ $val.Note }}{{- end }} \n{{- end }} \n \ndirections: \n{{- range $val := .Recipe.RecipeInstructions }} \n  - {{ $val.Text }} \n{{- end }} \n---",
+                rendered: "",
+                loaded: false,
+                payload: PAYLOAD_PRESETS.DE_JAEGERSCHNITZEL,
+                get notLoaded() {
+                    return !this.loaded;
+                },
+                render() {
+                    localStorage.setItem("payload", this.payload)
+                    localStorage.setItem("template", this.template)
+                    const rendered = renderWebhookTemplate(
+                        this.payload,
+                        this.template,
+                    );
+                    this.rendered = rendered == null ? "Error while rendering." : rendered;
+                },
+                onPresetChange(event) {
+                    const preset = event.target.value;
+                    this.payload = PAYLOAD_PRESETS[preset];
+                    this.render();
+                },
+                init() {
+                    const storedPayload = localStorage.getItem("payload");
+                    if(storedPayload) {
+                        this.payload = storedPayload;
+                    }
+
+                    const storedTemplate = localStorage.getItem("template");
+                    if(storedTemplate) {
+                        this.template = storedTemplate;
+                    }
+
+                    WebAssembly.instantiateStreaming(fetch("code.wasm"), go.importObject).then(async (result) => {
+                        go.run(result.instance);
+                        this.loaded = true;
+                    });
+                }
+            }
+        }
+    </script>
+</head>
+<body x-data="app()">
+<header>mealie-webhook-handler Playground</header>
+<template x-if="notLoaded">
+    <main>
+        <div class="loader">
+            <div class="loader--icon"></div>
+            <div class="loader--text">Loading ...</div>
+        </div>
+    </main>
+</template>
+<template x-if="loaded" x-init="init()">
+    <main>
+        <section id="payload" x-init="render()">
+            <h2>Webhook Payload</h2>
+            <select x-on:change="onPresetChange">
+                <option selected disabled>Select predefined payload</option>
+                <option value="DE_JAEGERSCHNITZEL">Jägerschnitzel (🇩🇪)</option>
+                <option value="EN_CHAAP_MASALA">Soya Chaap Masala Recipe (🇬🇧)</option>
+            </select>
+            <textarea x-model="payload" @input="render"></textarea>
+        </section>
+        <section id="template">
+            <h2>Template</h2>
+            <textarea x-on:input="render" x-model="template"></textarea>
+        </section>
+        <section id="rendered">
+            <h2>Output</h2>
+            <textarea readonly x-text="rendered"></textarea>
+        </section>
+    </main>
+</template>
+</body>
+</html>
