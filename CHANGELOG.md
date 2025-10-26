@@ -1,3 +1,18 @@
+## [1.1.0](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.0.21...v1.1.0) (2025-10-26)
+
+
+### Features
+
+* Add HasQuantity helper ([148fde9](https://github.com/timo-reymann/mealie-webhook-handler/commit/148fde977f38c7d22ed63a20fe3b6df1fb94a217))
+* Add playground ([087880d](https://github.com/timo-reymann/mealie-webhook-handler/commit/087880d2c47f5cd46756e77c1f62a7ff54b4bb20))
+* **playground:** Add recover to avoid exit of go runtime ([a3674ce](https://github.com/timo-reymann/mealie-webhook-handler/commit/a3674ced207846d29030c0884443428a1dfc38f2))
+
+
+### Bug Fixes
+
+* Fix nutrition types ([b34ca75](https://github.com/timo-reymann/mealie-webhook-handler/commit/b34ca7582e90fc22d85c91f510643af67149dbd5))
+* Fix wasm build constraint ([426b55b](https://github.com/timo-reymann/mealie-webhook-handler/commit/426b55b8e146a62782d897f86ce2de05a61f7e90))
+
 ## [1.0.21](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.0.20...v1.0.21) (2025-10-15)
 
 
