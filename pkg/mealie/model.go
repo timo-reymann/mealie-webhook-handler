@@ -66,17 +66,17 @@ type RecipeInstruction struct {
 
 // Nutrition represents the nutritional information of the recipe.
 type Nutrition struct {
-	Calories              *int `json:"calories"`
-	CarbohydrateContent   *int `json:"carbohydrate_content"`
-	CholesterolContent    *int `json:"cholesterol_content"`
-	FatContent            *int `json:"fat_content"`
-	FiberContent          *int `json:"fiber_content"`
-	ProteinContent        *int `json:"protein_content"`
-	SaturatedFatContent   *int `json:"saturated_fat_content"`
-	SodiumContent         *int `json:"sodium_content"`
-	SugarContent          *int `json:"sugar_content"`
-	TransFatContent       *int `json:"trans_fat_content"`
-	UnsaturatedFatContent *int `json:"unsaturated_fat_content"`
+	Calories              *string `json:"calories"`
+	CarbohydrateContent   *string `json:"carbohydrate_content"`
+	CholesterolContent    *string `json:"cholesterol_content"`
+	FatContent            *string `json:"fat_content"`
+	FiberContent          *string `json:"fiber_content"`
+	ProteinContent        *string `json:"protein_content"`
+	SaturatedFatContent   *string `json:"saturated_fat_content"`
+	SodiumContent         *string `json:"sodium_content"`
+	SugarContent          *string `json:"sugar_content"`
+	TransFatContent       *string `json:"trans_fat_content"`
+	UnsaturatedFatContent *string `json:"unsaturated_fat_content"`
 }
 
 // Tag represents a tag
