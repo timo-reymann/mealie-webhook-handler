@@ -81,24 +81,19 @@ jobs:
           docker_username: DOCKER_USERNAME
           docker_password: DOCKER_TOKEN
 
-publish-docker-image:
-  executor: docker/docker
-  steps:
-    - checkout
-    - attach_workspace:
-        at: ./
-    - setup_remote_docker:
-        version: default
-    - run:
-        name: Build and publish image
-        command: |
-          echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
-          docker buildx create --use
-          make build-docker
-    - docker/update_description:
-        image: timoreymann/gitlab-ci-verify
-        docker_username: DOCKER_USERNAME
-        docker_password: DOCKER_TOKEN
+  publish-playground:
+    executor: go
+    steps:
+      - checkout
+      - run:
+          name: Create gh-pages root
+          command: |
+            mkdir -p gh-pages
+            cp -R playground gh-pages/
+      - github-utils/publish_github_pages:
+          folder: gh-pages/
+          git_commit_author_email: "no-reply@timo-reymann.de"
+          git_commit_author_name: "CircleCI"
 
 workflows:
   version: 2
@@ -118,6 +113,12 @@ workflows:
             branches:
               only:
                 - main
+      - publish-playground:
+          filters:
+            branches:
+              only:
+                - main
+
   release:
     jobs:
       - build:
