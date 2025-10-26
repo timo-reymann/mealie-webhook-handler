@@ -55,6 +55,10 @@ type RecipeIngredient struct {
 	ReferenceID  string   `json:"reference_id"`
 }
 
+func (r *RecipeIngredient) HasQuantity() bool {
+	return r.Quantity != nil && *r.Quantity > 0.0
+}
+
 // RecipeInstruction represents a step in the recipe instructions.
 type RecipeInstruction struct {
 	ID                   string        `json:"id"`
