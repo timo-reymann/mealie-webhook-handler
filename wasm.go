@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"syscall/js"
 
 	"go.deepl.dev/mealie-webhook-handler/pkg/configuration"
@@ -9,8 +10,20 @@ import (
 )
 
 func main() {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered from", r)
+		}
+	}()
+
 	js.Global().
 		Set("renderWebhookTemplate", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+			defer func() {
+				if r := recover(); r != nil {
+					fmt.Println("Recovered from", r)
+				}
+			}()
+
 			if len(args) != 2 {
 				return "Invalid number of arguments"
 			}
