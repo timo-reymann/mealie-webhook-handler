@@ -1,3 +1,9 @@
+## [1.1.3](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.1.2...v1.1.3) (2025-12-05)
+
+### Bug Fixes
+
+* Upgrade to github v80 lib ([22d1e43](https://github.com/timo-reymann/mealie-webhook-handler/commit/22d1e435366c674ad741002d6bbb4790f1bf7428))
+
 ## [1.1.2](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.1.1...v1.1.2) (2025-11-09)
 
 
