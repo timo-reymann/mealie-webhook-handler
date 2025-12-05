@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/google/go-github/v74/github"
+	"github.com/google/go-github/v80/github"
 	"go.deepl.dev/mealie-webhook-handler/pkg/output/validation"
 )
 
@@ -73,9 +73,9 @@ func (g *GitHubPullRequestOutput) Output(ctx context.Context, templatedRecipe st
 		ctx,
 		owner,
 		repo,
-		&github.Reference{
-			Ref:    github.Ptr(fmt.Sprintf("refs/heads/%s", config[sourceBranchCfgKey])),
-			Object: &github.GitObject{SHA: github.Ptr(baseCommitSHA)},
+		github.CreateRef{
+			Ref: fmt.Sprintf("refs/heads/%s", config[sourceBranchCfgKey]),
+			SHA: baseCommitSHA,
 		},
 	)
 	if err != nil && (r != nil && r.StatusCode != 422) {
