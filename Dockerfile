@@ -10,7 +10,8 @@ RUN if [[ "$(arch)" == "x86_64" ]]; then \
     chown 1000:1000 /bin/mealie-webhook-handler
 
 FROM alpine
-LABEL org.opencontainers.image.title="mealie-webhook-handler"
+LABEL 
+LABEL org.opencontainers.image.licenses="gpl-3.0"org.opencontainers.image.title="mealie-webhook-handler"
 LABEL org.opencontainers.image.description="Webhook handler for recipes hosted on a mealie.io instance"
 LABEL org.opencontainers.image.ref.name="main"
 LABEL org.opencontainers.image.licenses='GPL v3'
