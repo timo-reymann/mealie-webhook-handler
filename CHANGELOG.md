@@ -1,3 +1,9 @@
+## [1.2.0](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.1.3...v1.2.0) (2026-02-26)
+
+### Features
+
+* Add --license flag ([4f06b93](https://github.com/timo-reymann/mealie-webhook-handler/commit/4f06b932da406cc54f8f90f40af8f02d96128b94))
+
 ## [1.1.3](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.1.2...v1.1.3) (2025-12-05)
 
 ### Bug Fixes
