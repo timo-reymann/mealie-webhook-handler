@@ -1,7 +1,14 @@
 package main
 
-import "go.deepl.dev/mealie-webhook-handler/cmd"
+import (
+	_ "embed"
+
+	"go.deepl.dev/mealie-webhook-handler/cmd"
+)
+
+//go:embed NOTICE
+var NoticeContent []byte
 
 func main() {
-	cmd.Execute()
+	cmd.Execute(NoticeContent)
 }

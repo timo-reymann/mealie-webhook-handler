@@ -10,13 +10,20 @@ import (
 	"go.deepl.dev/mealie-webhook-handler/pkg/configuration"
 )
 
-func Execute() {
+func Execute(noticeContent []byte) {
 	args := flag.NewFlagSet("mealie-webhook-handler", flag.ContinueOnError)
 	var configPath string
+	var isLicense bool
 	args.StringVar(&configPath, "config-file", "webhooks.toml", "Path to the config file")
+	args.BoolVar(&isLicense, "license", false, "Show license information")
 	err := args.Parse(os.Args[1:])
 	if err != nil {
 		return
+	}
+
+	if isLicense {
+		fmt.Printf("%s", noticeContent)
+		os.Exit(0)
 	}
 
 	configVal, err := os.ReadFile(configPath)
