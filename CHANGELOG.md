@@ -1,3 +1,9 @@
+## [1.2.1](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.2.0...v1.2.1) (2026-03-28)
+
+### Bug Fixes
+
+* Optimize container layers ([23c3f67](https://github.com/timo-reymann/mealie-webhook-handler/commit/23c3f670501379536413c3fe6ae4d16e08754bef))
+
 ## [1.2.0](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.1.3...v1.2.0) (2026-02-26)
 
 ### Features
