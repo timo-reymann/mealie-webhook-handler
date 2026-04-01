@@ -1,3 +1,9 @@
+## [1.2.2](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.2.1...v1.2.2) (2026-04-01)
+
+### Bug Fixes
+
+* **deps:** update module github.com/pelletier/go-toml/v2 to v2.3.0 ([1dc4445](https://github.com/timo-reymann/mealie-webhook-handler/commit/1dc44458a9685e02111dc08fbb2624e2d27a0bee))
+
 ## [1.2.1](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.2.0...v1.2.1) (2026-03-28)
 
 ### Bug Fixes
