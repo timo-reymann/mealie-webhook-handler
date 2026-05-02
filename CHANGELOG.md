@@ -1,3 +1,13 @@
+## [1.3.0](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.2.2...v1.3.0) (2026-05-02)
+
+### Features
+
+* Use custom runtime image ([ca9d9a8](https://github.com/timo-reymann/mealie-webhook-handler/commit/ca9d9a81405d95f10e78e00890202f573e66b1c5))
+
+### Bug Fixes
+
+* **deps:** update module github.com/pelletier/go-toml/v2 to v2.3.1 ([de034fe](https://github.com/timo-reymann/mealie-webhook-handler/commit/de034fe1d447f083ffa44f68a4e407955cb1b987))
+
 ## [1.2.2](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.2.1...v1.2.2) (2026-04-01)
 
 ### Bug Fixes
