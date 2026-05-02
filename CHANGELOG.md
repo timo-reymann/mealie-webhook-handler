@@ -1,3 +1,9 @@
+## [1.3.1](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.3.0...v1.3.1) (2026-05-02)
+
+### Bug Fixes
+
+* Remove armv7 support ([5411771](https://github.com/timo-reymann/mealie-webhook-handler/commit/54117712d2590f829df105dcdefae69ec5c9ddd9))
+
 ## [1.3.0](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.2.2...v1.3.0) (2026-05-02)
 
 ### Features
