@@ -1,3 +1,9 @@
+## [1.3.2](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.3.1...v1.3.2) (2026-05-12)
+
+### Reverts
+
+* Revert "chore(deps): update timoreymann/ubuntu-runtime docker tag to v26.6" ([#56](https://github.com/timo-reymann/mealie-webhook-handler/issues/56)) ([046277a](https://github.com/timo-reymann/mealie-webhook-handler/commit/046277acc71ee1be437a8905c8e83969e08cbf72))
+
 ## [1.3.1](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.3.0...v1.3.1) (2026-05-02)
 
 ### Bug Fixes
