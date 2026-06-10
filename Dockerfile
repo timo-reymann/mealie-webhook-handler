@@ -9,7 +9,7 @@ RUN if [[ "$(arch)" == "x86_64" ]]; then \
     chmod +x /bin/mealie-webhook-handler && \
     chown 1000:1000 /bin/mealie-webhook-handler
 
-FROM timoreymann/ubuntu-runtime:26.04
+FROM timoreymann/ubuntu-runtime:26.13
 
 LABEL org.opencontainers.image.title="mealie-webhook-handler" \
       org.opencontainers.image.description="Webhook handler for recipes hosted on a mealie.io instance" \
