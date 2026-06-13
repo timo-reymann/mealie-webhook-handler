@@ -1,3 +1,7 @@
+FROM scratch AS license
+COPY LICENSE /LICENSE
+COPY NOTICE /NOTICE
+
 FROM busybox AS bin
 COPY ./dist /dist
 RUN if [[ "$(arch)" == "x86_64" ]]; then \
@@ -20,5 +24,7 @@ LABEL org.opencontainers.image.title="mealie-webhook-handler" \
       org.opencontainers.image.url="https://github.com/timo-reymann/mealie-webhook-handler" \
       org.opencontainers.image.documentation="https://github.com/timo-reymann/mealie-webhook-handler" \
       org.opencontainers.image.source="https://github.com/timo-reymann/mealie-webhook-handler.git"
+
+COPY --from=license / /
 
 COPY --from=bin /bin/mealie-webhook-handler /bin/mealie-webhook-handler
