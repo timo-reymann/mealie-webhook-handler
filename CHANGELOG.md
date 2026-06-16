@@ -1,3 +1,9 @@
+## [1.4.0](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.3.2...v1.4.0) (2026-06-16)
+
+### Features
+
+* Copy LICENSE and NOTICE into runtime image ([#63](https://github.com/timo-reymann/mealie-webhook-handler/issues/63)) ([0074389](https://github.com/timo-reymann/mealie-webhook-handler/commit/0074389c0a4208685bc961589a3f38e34f5bfe81))
+
 ## [1.3.2](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.3.1...v1.3.2) (2026-05-12)
 
 ### Reverts
