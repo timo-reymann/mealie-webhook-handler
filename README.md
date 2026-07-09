@@ -29,7 +29,7 @@ mealie-webhook-handler
 This small service bridges [Mealie](https://mealie.io/) (self-hosted recipe manager) with external systems by:
 
 1. **Listening for webhooks** triggered by the user in the UI.
-2. **Rendering recipes** using customizable Go templates (e.g., for [Chowdown](https://chowdown.dev/)).
+2. **Rendering recipes** using customizable Go templates (e.g., for [Chowdown](https://chowdown.io/)).
 3. **Pushing output** to destinations like GitHub repos (via PR)
 
 **Key Use Case**:
