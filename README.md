@@ -97,7 +97,11 @@ It's recommended to install it next to your mealie instance using docker-compose
    ```yaml
    services:
      mealie:
-     # mealie configuration
+       # Mealie 3.26.0+ requires the internal handler hostname to be allowed
+       # for Recipe Actions.
+       image: ghcr.io/mealie-recipes/mealie:latest
+       environment:
+         HTTP_ALLOW_LIST: mealie-webhook-handler
      mealie-webhook-handler:
        image: timoreymann/mealie-webhook-handler
        restart: always
@@ -111,6 +115,14 @@ It's recommended to install it next to your mealie instance using docker-compose
          - ./webhook-config.toml:/etc/mealie-webhook-handler/config.toml
          - ./webhook-templates:/etc/mealie-webhook-handler/templates
     ```
+
+   For Mealie 3.26.0 and newer, add the webhook handler's exact Docker DNS
+   hostname to Mealie's `HTTP_ALLOW_LIST`. The hostname must match the host
+   used in the Recipe Action URL, for example
+   `http://mealie-webhook-handler:2025/webhook/chowdown_github_sync`. If your
+   service has a different name, use that name instead. Multiple allowed
+   hosts can be provided as a comma-separated list. See Mealie's [HTTP
+   allow-list security configuration](https://mealie.io/documentation/getting-started/installation/backend-config/#security).
 
 ## Usage
 
