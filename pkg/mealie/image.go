@@ -11,6 +11,7 @@ func FetchRecipeImage(apiUrl string, recipeId string, version string) ([]byte, e
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 
 	if res.Header.Get("Content-Type") == "application/json" {
 		return nil, nil
