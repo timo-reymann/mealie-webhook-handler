@@ -1,3 +1,9 @@
+## [1.4.3](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.4.2...v1.4.3) (2026-10-07)
+
+### Bug Fixes
+
+* close HTTP response body in FetchRecipeImage ([#86](https://github.com/timo-reymann/mealie-webhook-handler/issues/86)) ([5634664](https://github.com/timo-reymann/mealie-webhook-handler/commit/5634664b004299c4299b926ca48a5a24dcf255ce))
+
 ## [1.4.2](https://github.com/timo-reymann/mealie-webhook-handler/compare/v1.4.1...v1.4.2) (2026-07-13)
 
 ### Bug Fixes
